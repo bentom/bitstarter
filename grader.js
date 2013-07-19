@@ -22,10 +22,12 @@ References:
 */
 
 var fs = require('fs');
+url = require('url');
 var program = require('commander');
 var cheerio = require('cheerio');
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
+var URLFILE_DEFAULT = "http://fierce-island-8033.herokuapp.com/";
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -35,6 +37,14 @@ var assertFileExists = function(infile) {
     }
     return instr;
 };
+
+var sys = require('util'),
+    rest = require('../node_modules/restler');
+
+rest.get('urlfile').on('complete', function(result) {
+ return cheerio.load(result);
+});
+
 
 var cheerioHtmlFile = function(htmlfile) {
     return cheerio.load(fs.readFileSync(htmlfile));
